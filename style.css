@@ -7,6 +7,7 @@
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #ffff; 
+  overflow-x: hidden;
 }  
 
 .sidebar { 
@@ -19,6 +20,10 @@ body {
   border-right: 1px solid #ddd;  
   display: flex; 
   flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }  
 
 .sidebar.closed {
@@ -65,20 +70,32 @@ ul li i {
   margin-bottom: 40px;
 } 
 
-
 .sidebar.closed h2,
 .sidebar.closed p {
   display: none;
 } 
+
 .task-card { 
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  width: 420px;
+  width: 90%;
+  max-width: 420px;
   padding: 20px; 
-  margin: 30vh 65vh; 
-  display: none; 
-  position: absolute; 
+  position: fixed;  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 2000;
+}  
+
+.task-card.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .task-input {
@@ -89,19 +106,12 @@ ul li i {
   outline: none;
 }
 
-.task-desc {
-  width: 100%;
-  border: none;
-  font-size: 14px;
-  color: #666;
-  margin-top: 8px;
-  outline: none;
-}
 
 .options {
   display: flex;
   gap: 10px;
   margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -129,7 +139,6 @@ ul li i {
   padding-top: 12px;
 }
 
-
 .footer-buttons {
   display: flex;
   gap: 10px;
@@ -153,5 +162,104 @@ ul li i {
 }
 
 .add-btn:hover {
-  background: #f25b5b;
+  background: #f25b5b; 
+} 
+
+.main-content { 
+  display: flex;
+  margin-left: 260px;
+  transition: margin-left 0.3s;
+  padding: 20px;
+} 
+
+.sidebar.closed ~ .main-content {
+  margin-left: 60px;
+}
+
+.inbox { 
+  flex: 1;
+  margin-top: 50px;  
+}  
+
+.AllTask { 
+  margin-top: 30px; 
+} 
+
+.task-list li { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;  
+  position: relative;
+  flex-wrap: wrap; 
+  transition: 0.1s;
+}   
+
+.line {   
+  background-color: rgba(0, 0, 0, 0.155);
+  height: 1px; 
+  width: 100%; 
+  margin: 15px 0;
+}  
+
+.task-list li .icons { 
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.task-list li i { 
+  transition: 0.2s;  
+  color: rgba(0, 0, 0, 0.272);
+} 
+
+.task-list li i:hover{ 
+  transform: scale(1.2); 
+  cursor: pointer; 
+  color: #dc4c3e;
+}  
+.task-list li .fa-pen-to-square:hover{ 
+color: #3edc5e;
+}
+
+.date-p { 
+  margin-left: 15px;  
+  font-size: 12px;
+  color:#00000059
+} 
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 60px;
+    padding: 10px;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .sidebar h2, .sidebar p {
+    display: none;
+  }
+
+  .task-card {
+    width: 95%;
+  }
+
+  .inbox h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn, .cancel-btn, .add-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .task-input {
+    font-size: 16px;
+  }
+  .task-desc {
+    font-size: 13px;
+  }
 }
